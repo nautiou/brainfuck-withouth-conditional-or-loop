@@ -57,11 +57,10 @@ void sub(struct bf *bf) {
 void pass(struct bf * bf) {
     static void(*f[2])(struct bf*) = {pass, ret};
     f[*++bf->prog == 6](bf);
-    Command[*++bf->prog](bf);
 }
 void ent(struct bf *bf) {
     static void(*f[2])(struct bf*) = {run, pass};
-    unsigned char * ptr = bf->prog++;
+    unsigned char * const ptr = bf->prog++;
     f[!bf->memory[bf->p]](bf);
     unsigned char *tmp[2] = {ptr - 1, bf->prog};
     bf->prog = tmp[!bf->memory[bf->p]];
@@ -112,7 +111,7 @@ void init(char * str, uint len) {
     reset(bf.memory, 0xff);
     bf.prog = prog;
     bf.p = 0;
-    Command[*prog](&bf);
+    run(&bf);
 }
 
 void no_start(char * str) {}
